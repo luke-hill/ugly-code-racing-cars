@@ -9,14 +9,14 @@ RSpec.describe 'Alarm' do
         allow(Sensor).to receive(:sample_pressure) { 0.99 }
         alarm.check
         
-        expect(alarm.is_alarm_on).to be true
+        expect(alarm).to be_on
       end
   
       it 'when the pressure is too high' do
         allow(Sensor).to receive(:sample_pressure) { 6.01 }
         alarm.check
 
-        expect(alarm.is_alarm_on).to be true
+        expect(alarm).to be_on
       end
     end
 
@@ -25,7 +25,7 @@ RSpec.describe 'Alarm' do
         allow(Sensor).to receive(:sample_pressure) { 3.0 }
         alarm.check
 
-        expect(alarm.is_alarm_on).to be false
+        expect(alarm).to be_off
       end
     end
   end
