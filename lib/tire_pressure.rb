@@ -4,7 +4,7 @@ class Sensor
   OFFSET = 16
 
   def pop_next_pressure_psi_value
-    Sensor.OFFSET + self.sample_pressure()
+    Sensor::OFFSET + Sensor.sample_pressure()
   end
 
   def self.sample_pressure
