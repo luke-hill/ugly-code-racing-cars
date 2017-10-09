@@ -2,7 +2,10 @@ require_relative '../lib/tire_pressure'
 
 RSpec.describe 'Alarm' do
   context '#check' do
-    let(:alarm) { Alarm.new }
+    let(:low_pressure_threshold) { 17 }
+    let(:high_pressure_threshold) { 21 }
+    
+    let(:alarm) { Alarm.new(low_pressure_threshold, high_pressure_threshold, Sensor.new) }
     
     context 'activates the alarm' do
       it 'when the pressure is too low' do

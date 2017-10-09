@@ -12,38 +12,36 @@ end
 
 class Alarm
   attr_accessor :alarm
-  attr_reader :low_pressure_threshold, :high_pressure_threshold
+  attr_reader :low_pressure_threshold, :high_pressure_threshold, :sensor
 
-  def initialize
-    @low_pressure_threshold = 17
-    @high_pressure_threshold = 21
-    @sensor = Sensor.new
+  def initialize(low_pressure_threshold, high_pressure_threshold, sensor)
+    @low_pressure_threshold = low_pressure_threshold
+    @high_pressure_threshold = high_pressure_threshold
+    @sensor = sensor
     @alarm = :off
   end
 
   def check
-    if pressure_too_low? || pressure_too_high?
+    unless pressure_ok?
       self.alarm = :on
     end
   end
-  
-  def sensor_value
-    @sensor_value ||= @sensor.pop_next_pressure_psi_value
-  end
-  
-  def pressure_too_high?
-    high_pressure_threshold < sensor_value
-  end
-  
-  def pressure_too_low?
-    sensor_value < low_pressure_threshold
-  end
-  
+
   def on?
     alarm == :on
   end
-  
+
   def off?
     alarm == :off
+  end
+  
+  private
+  
+  def sensor_value
+    @sensor_value ||= sensor.pop_next_pressure_psi_value
+  end
+  
+  def pressure_ok?
+    sensor_value.between?(low_pressure_threshold, high_pressure_threshold)
   end
 end
